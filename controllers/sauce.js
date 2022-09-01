@@ -17,9 +17,18 @@ exports.createSauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
-    Sauce.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet suprrimé !' }))
-        .catch(error => res.status(400).json({ error }))
+    //On trouve la sauce à supprimer
+    Sauce.findOne({ _id: req.params.id })
+    //On supprime la sauce dans le dossier image
+            .then(sauce => {
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    //On supprimer la sauce
+                Sauce.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: 'Objet suprrimé !' }))
+                    .catch(error => res.status(400).json({ error }))}
+                )
+                })
 };
 
 
