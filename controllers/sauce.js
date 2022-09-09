@@ -90,19 +90,18 @@ exports.likeSauce = (req, res, next) => {
             }
             // Différents cas:
             switch (like) {
-                case 1:  // CAS: sauce liked
+                case 1:  // Si on like la sauce on envoie l'userId dans le tableau
                     newValues.usersLiked.push(userId);
                     break;
-                case -1:  // CAS: sauce disliked
+                case -1:  // Si on Dislike la sauce on envoie l'userId dans le tableau
                     newValues.usersDisliked.push(userId);
                     break;
-                case 0:  // CAS: Annulation du like/dislike
+                case 0:  // Cas annulation : si l'userId est deja présent dans le tableau like on le récupére son index grâce à l'userID et on l'enlève du tableau
                     if (newValues.usersLiked.includes(userId)) {
-                        // si on annule le like
                         const index = newValues.usersLiked.indexOf(userId);
                         newValues.usersLiked.splice(index, 1);
                     } else {
-                        // si on annule le dislike
+                        // On supprime l'UserId du tableau dislike 
                         const index = newValues.usersDisliked.indexOf(userId);
                         newValues.usersDisliked.splice(index, 1);
                     }
@@ -111,7 +110,8 @@ exports.likeSauce = (req, res, next) => {
             // Calcul du nombre de likes / dislikes
             newValues.likes = newValues.usersLiked.length;
             newValues.dislikes = newValues.usersDisliked.length;
-            // Mise à jour de la sauce avec les nouvelles valeurs
+            
+            // On modifie les valeurs
             Sauce.updateOne({ _id: sauceId }, newValues )
                 .then(() => res.status(200).json({ message: 'Sauce notée !' }))
                 .catch(error => res.status(400).json({ error }))  
