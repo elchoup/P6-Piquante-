@@ -4,6 +4,8 @@ PREREQUIS :
   - Avoir node.js
   - Avoir npm
 
+Dans un premier temps créer un dossier pour acceuillir nos deux dossiers backend et front end.
+
 Backend : 
 
   - Faire un git clone : 'gh repo clone elchoup/P6-Piquante-'
